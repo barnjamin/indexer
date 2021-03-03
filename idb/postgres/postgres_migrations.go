@@ -439,7 +439,7 @@ func m6RewardsAndDatesPart2(db *IndexerDb, state *MigrationState) error {
 		options.GreaterThanAddress = state.NextAccount[:]
 	}
 
-	accountChan := db.GetAccounts(context.Background(), options)
+	accountChan, _ := db.GetAccounts(context.Background(), options)
 
 	batchSize := 500
 	batchNumber := 1
@@ -578,7 +578,7 @@ func initM5AccountData() *m5AccountData {
 func processAccountTransactionsWithRetry(db *IndexerDb, addressStr string, address types.Address, nextRound uint64, retries int) (results *m5AccountData, err error) {
 	for i := 0; i < retries; i++ {
 		// Query transactions for the account
-		txnrows := db.Transactions(context.Background(), idb.TransactionFilter{
+		txnrows, _ := db.Transactions(context.Background(), idb.TransactionFilter{
 			Address:  address[:],
 			MaxRound: nextRound,
 		})
